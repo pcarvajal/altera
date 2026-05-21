@@ -1,0 +1,37 @@
+# Dependencies (PNPM)
+node_modules/
+.pnpm-store/
+.pnpm-debug.log
+
+# Build outputs (TS)
+*.dist/
+**/dist/
+*.build/
+**/build/
+*.tsbuildinfo
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+pnpm-debug.log*
+
+# Testing
+coverage/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# AI generated files
+CLAUDE.md

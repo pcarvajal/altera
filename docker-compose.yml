@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: cobros-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cobros
+      POSTGRES_PASSWORD: cobros_dev
+      POSTGRES_DB: cobros
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U cobros']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: . # raíz del monorepo
+      dockerfile: apps/api/Dockerfile
+    container_name: cobros-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://cobros:cobros_dev@postgres:5432/cobros
+      JWT_SECRET: cambia-esto-en-produccion
+      JWT_EXPIRES_IN: 1h
+      PORT: 3001
+      NODE_ENV: production
+    ports:
+      - '3001:3001'
+
+  web:
+    build:
+      context: . # raíz del monorepo
+      dockerfile: apps/web/Dockerfile
+    container_name: cobros-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+      API_URL_SSR: http://api:3001
+      NODE_ENV: production
+    ports:
+      - '3000:3000'
+
+volumes:
+  postgres-data:
