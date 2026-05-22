@@ -2,8 +2,8 @@
   "name": "shared",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "npx tsc",
     "lint": "eslint . --ext .ts --fix",
