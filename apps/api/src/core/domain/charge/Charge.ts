@@ -99,10 +99,15 @@ export class Charge extends AggregateRoot {
       throw new InvalidChargeStateTransitionError(this.state.value, newChargeState.value);
     }
 
-    if (newChargeState.value === 'REJECTED' && !rejectDetails) {
-      throw new RejectDetailsError();
-    }
-
     this.state = newChargeState;
+
+    if (this.state.value === 'REJECTED') {
+      if (!rejectDetails) {
+        throw new RejectDetailsError();
+      }
+      this.rejectDetails = new RejectDetails({ value: rejectDetails });
+    } else {
+      this.rejectDetails = null;
+    }
   }
 }
