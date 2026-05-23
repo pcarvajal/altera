@@ -1,5 +1,6 @@
 import { DynamicModule, Module, Type } from '@nestjs/common';
 import { ChargeRepository } from './domain/charge/ports/outputs/ChargeRepository';
+import { ClientFinder } from './domain/charge/ports/outputs/ClientFinder';
 import { ChargeApplicationService } from './application/charge/services/ChargeCreatorApplicationService';
 import { ClientRepository } from './domain/client/ports/outputs/ClientRepository';
 import { UserRepository } from './domain/user/ports/outputs/UserRepository';
@@ -12,6 +13,7 @@ export type CoreModuleOptions = {
   modules: Type[];
   adapters: {
     chargeRepository: Type<ChargeRepository>;
+    clientFinder: Type<ClientFinder>;
     clientRepository: Type<ClientRepository>;
     userRepository: Type<UserRepository>;
     tokenPort: Type<TokenPort>;
@@ -35,8 +37,9 @@ export class CoreModule {
 
     const ChargeApplicationProvider = {
       provide: CHARGE_APPLICATION,
-      useFactory: (repo: ChargeRepository) => new ChargeApplicationService(repo),
-      inject: [options.adapters.chargeRepository]
+      useFactory: (repo: ChargeRepository, clientFinder: ClientFinder) =>
+        new ChargeApplicationService(repo, clientFinder),
+      inject: [options.adapters.chargeRepository, options.adapters.clientFinder]
     };
 
     const ClientApplicationProvider = {

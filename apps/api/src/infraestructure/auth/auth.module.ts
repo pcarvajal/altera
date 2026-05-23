@@ -8,7 +8,6 @@ import { JwtTokenAdapter } from '../adapters/jwt-token.adapter';
     JwtModule.registerAsync({
       useFactory: (config: ConfigService) => ({
         secret: config.getOrThrow<string>('jwt.secret'),
-
         signOptions: { expiresIn: config.get('jwt.expiresIn', '24h') }
       }),
       inject: [ConfigService]

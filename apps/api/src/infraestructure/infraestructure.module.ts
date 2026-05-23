@@ -14,6 +14,7 @@ import { JwtTokenAdapter } from './adapters/jwt-token.adapter';
       modules: [DatabaseModule, AuthInfraestructureModule],
       adapters: {
         chargeRepository: ChargeRepositoryAdapter,
+        clientFinder: ClientRepositoryAdapter,
         clientRepository: ClientRepositoryAdapter,
         userRepository: UserRepositoryAdapter,
         tokenPort: JwtTokenAdapter

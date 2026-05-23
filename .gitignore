@@ -33,4 +33,5 @@ coverage/
 .cache/
 
 # AI generated files
+.claude/
 CLAUDE.md
