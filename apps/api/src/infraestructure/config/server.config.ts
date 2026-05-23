@@ -4,6 +4,6 @@ export interface ServerConfig {
 
 export default () => ({
   server: {
-    port: parseInt(process.env.SERVER_PORT, 10)
+    port: parseInt(process.env.SERVER_PORT!, 10)
   }
 });

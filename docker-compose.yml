@@ -19,7 +19,7 @@ services:
 
   api:
     build:
-      context: . # raíz del monorepo
+      context: .
       dockerfile: apps/api/Dockerfile
     container_name: cobros-api
     restart: unless-stopped
@@ -37,7 +37,7 @@ services:
 
   web:
     build:
-      context: . # raíz del monorepo
+      context: .
       dockerfile: apps/web/Dockerfile
     container_name: cobros-web
     restart: unless-stopped
