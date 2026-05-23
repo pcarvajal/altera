@@ -33,4 +33,31 @@ export class ChargeRepositoryAdapter implements ChargeRepository {
     const entities = await this.repository.find({ where: { clientId: clientId.value } });
     return entities.map(Charge.fromScalars);
   }
+
+  async find(
+    page: number,
+    pageSize: number,
+    state?: string,
+    fromDate?: Date,
+    toDate?: Date
+  ): Promise<Charge[]> {
+    const query = this.repository.createQueryBuilder('charge');
+
+    if (state) {
+      query.andWhere('charge.state = :state', { state });
+    }
+
+    if (fromDate) {
+      query.andWhere('charge.createdAt >= :fromDate', { fromDate });
+    }
+
+    if (toDate) {
+      query.andWhere('charge.createdAt <= :toDate', { toDate });
+    }
+
+    query.skip((page - 1) * pageSize).take(pageSize);
+
+    const entities = await query.getMany();
+    return entities.map(Charge.fromScalars);
+  }
 }

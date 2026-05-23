@@ -4,6 +4,7 @@ export class RejectDetails extends StringValueObject {
   constructor({ value }: { value: string }) {
     super({ value });
     this.ensureValueIsNotEmpty(value);
+    this.ensureValueIsNotTooShort(value);
     this.ensureValueIsNotTooLong(value);
   }
 
@@ -18,6 +19,15 @@ export class RejectDetails extends StringValueObject {
     if (value.length > maxLength) {
       throw new InvalidArgumentError({
         message: `Reject Details exceeds maximum length of ${maxLength} characters.`
+      });
+    }
+  }
+
+  private ensureValueIsNotTooShort(value: string): void {
+    const minLength = 10;
+    if (value.length < minLength) {
+      throw new InvalidArgumentError({
+        message: `Reject Details must be at least ${minLength} characters long.`
       });
     }
   }

@@ -5,7 +5,7 @@ export interface ChargeScalar {
   generationDate: Date;
   amount: number;
   state: string;
-  rejectDetails: string;
+  rejectDetails?: string;
   createdAt: Date;
   updatedAt: Date;
 }

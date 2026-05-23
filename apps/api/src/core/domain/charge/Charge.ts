@@ -1,4 +1,4 @@
-import { AggregateRoot, ChargeId, ClientId } from 'shared';
+import { AggregateRoot, ChargeId, ClientId, Nullable } from 'shared';
 import { Reference } from './value-objects/Reference';
 import { GenerationDate } from './value-objects/GenerationDate';
 import { RejectDetails } from './value-objects/RejectDetails';
@@ -17,7 +17,7 @@ export class Charge extends AggregateRoot {
   private generationDate: GenerationDate;
   private amount: Amount;
   private state: ChargeState;
-  private rejectDetails: RejectDetails;
+  private rejectDetails: Nullable<RejectDetails>;
   private createdAt: Date;
   private updatedAt: Date;
 
@@ -28,7 +28,7 @@ export class Charge extends AggregateRoot {
     generationDate: GenerationDate,
     amount: Amount,
     state: ChargeState,
-    rejectDetails: RejectDetails,
+    rejectDetails: Nullable<RejectDetails>,
     createdAt: Date,
     updatedAt: Date
   ) {
@@ -53,7 +53,7 @@ export class Charge extends AggregateRoot {
       new GenerationDate({ value: scalars.generationDate }),
       new Amount({ value: scalars.amount }),
       new ChargeState({ value: scalars.state }),
-      new RejectDetails({ value: scalars.rejectDetails }),
+      null,
       new Date(),
       new Date()
     );
@@ -67,7 +67,7 @@ export class Charge extends AggregateRoot {
       new GenerationDate({ value: scalars.generationDate }),
       new Amount({ value: scalars.amount }),
       new ChargeState({ value: scalars.state }),
-      new RejectDetails({ value: scalars.rejectDetails }),
+      scalars.rejectDetails ? new RejectDetails({ value: scalars.rejectDetails }) : null,
       scalars.createdAt,
       scalars.updatedAt
     );
@@ -80,8 +80,8 @@ export class Charge extends AggregateRoot {
       clientId: this.clientId.value,
       generationDate: this.generationDate.value,
       state: this.state.value,
-      rejectDetails: this.rejectDetails.value,
       amount: this.amount.value,
+      rejectDetails: this.rejectDetails?.value,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     };

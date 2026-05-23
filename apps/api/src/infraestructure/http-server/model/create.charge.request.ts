@@ -20,16 +20,7 @@ export class CreateChargeRequest {
   clientId!: string;
 
   @ApiProperty()
-  @IsDateString()
-  generationDate!: string;
-
-  @ApiProperty()
   @IsNumber()
   @IsPositive()
   amount!: number;
-
-  @ApiPropertyOptional()
-  @IsString()
-  @IsOptional()
-  rejectDetails?: string;
 }
