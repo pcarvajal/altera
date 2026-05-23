@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -13,6 +13,7 @@ function getServerConfig(app: INestApplication): ServerConfig | undefined {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.useGlobalFilters(new DomainExceptionFilter());
 
   const serverConfig = getServerConfig(app);
@@ -27,7 +28,7 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
 
-  const documentFactory = await SwaggerModule.createDocument(app, OAConfig);
+  const documentFactory = SwaggerModule.createDocument(app, OAConfig);
   SwaggerModule.setup('api', app, documentFactory, { jsonDocumentUrl: 'swagger/json' });
 
   await app.listen(serverConfig.port);

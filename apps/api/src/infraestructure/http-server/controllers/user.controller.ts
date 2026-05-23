@@ -3,6 +3,9 @@ import { USER_APPLICATION } from '../../../core/core.module';
 import { UserApplication } from '../../../core/application/user/UserApplication';
 import { CreateUserRequest } from '../model/create.user.request';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { RolesGuard } from '../guards/roles.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { Role } from '../../../core/domain/user/enums/Role';
 
 @Controller('users')
 export class UserController {
@@ -10,7 +13,8 @@ export class UserController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   async create(@Body() body: CreateUserRequest): Promise<void> {
     await this.userApplication.createUser({
       name: body.name,

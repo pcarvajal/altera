@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ClientScalar } from '../../../core/domain/client/ClientScalar';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateClientRequest implements ClientScalar {
+export class CreateClientRequest {
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   name!: string;
 }

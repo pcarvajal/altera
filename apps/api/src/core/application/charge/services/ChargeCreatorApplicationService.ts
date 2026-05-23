@@ -1,16 +1,23 @@
 import { Uuid } from 'shared';
 import { ChargeApplication } from '../ChargeApplication';
-import { ChargeDomainService } from '../../../domain/charge/services/ChargeDomainService';
+import { ChargeRepository } from '../../../domain/charge/ports/outputs/ChargeRepository';
+import { CreateChargeCommand } from '../commands/CreateChargeCommand';
 import { Charge } from '../../../domain/charge/Charge';
-import { ChargeScalar } from '../../../domain/charge/ChargeScalar';
 
 export class ChargeApplicationService extends ChargeApplication {
-  constructor(private readonly chargeDomainService: ChargeDomainService) {
+  constructor(private readonly chargeRepository: ChargeRepository) {
     super();
   }
 
-  async createCharge(input: ChargeScalar): Promise<void> {
-    const charge = Charge.create({ id: Uuid.random().value, ...input });
-    await this.chargeDomainService.save(charge);
+  async createCharge(command: CreateChargeCommand): Promise<void> {
+    const charge = Charge.create({
+      id: Uuid.random().value,
+      state: 'PENDING',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      ...command,
+      rejectDetails: command.rejectDetails ?? ''
+    });
+    await this.chargeRepository.save(charge);
   }
 }

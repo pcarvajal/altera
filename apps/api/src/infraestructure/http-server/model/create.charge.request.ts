@@ -1,16 +1,35 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {
+  IsDateString,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  IsUUID
+} from 'class-validator';
 
 export class CreateChargeRequest {
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   reference!: string;
+
   @ApiProperty()
+  @IsUUID()
   clientId!: string;
+
   @ApiProperty()
-  generationDate!: Date;
+  @IsDateString()
+  generationDate!: string;
+
   @ApiProperty()
-  state!: string;
-  @ApiProperty()
+  @IsNumber()
+  @IsPositive()
   amount!: number;
-  @ApiProperty()
-  rejectDetails!: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  rejectDetails?: string;
 }

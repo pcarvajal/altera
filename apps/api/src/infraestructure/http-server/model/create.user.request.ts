@@ -1,13 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { UserScalar } from '../../../core/domain/user/UserScalar';
+import { IsEmail, IsEnum, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { Role } from '../../../core/domain/user/enums/Role';
 
-export class CreateUserRequest implements UserScalar {
+export class CreateUserRequest {
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   name!: string;
+
   @ApiProperty()
+  @IsEmail()
   email!: string;
+
   @ApiProperty()
+  @IsString()
+  @MinLength(8)
   password!: string;
-  @ApiProperty()
-  role!: string;
+
+  @ApiProperty({ enum: Role })
+  @IsEnum(Role)
+  role!: Role;
 }

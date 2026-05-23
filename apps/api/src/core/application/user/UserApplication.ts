@@ -1,5 +1,5 @@
-import { UserScalar } from '../../domain/user/UserScalar';
+import { CreateUserCommand } from './commands/CreateUserCommand';
 
 export abstract class UserApplication {
-  abstract createUser(input: UserScalar): Promise<void>;
+  abstract createUser(command: CreateUserCommand): Promise<void>;
 }

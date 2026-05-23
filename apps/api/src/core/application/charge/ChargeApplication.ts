@@ -1,5 +1,5 @@
-import { ChargeScalar } from '../../domain/charge/ChargeScalar';
+import { CreateChargeCommand } from './commands/CreateChargeCommand';
 
 export abstract class ChargeApplication {
-  abstract createCharge(input: ChargeScalar): Promise<void>;
+  abstract createCharge(command: CreateChargeCommand): Promise<void>;
 }

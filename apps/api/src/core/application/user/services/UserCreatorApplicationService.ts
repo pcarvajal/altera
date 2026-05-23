@@ -1,16 +1,16 @@
 import { Uuid } from 'shared';
 import { UserApplication } from '../UserApplication';
-import { UserScalar } from '../../../domain/user/UserScalar';
+import { UserRepository } from '../../../domain/user/ports/outputs/UserRepository';
+import { CreateUserCommand } from '../commands/CreateUserCommand';
 import { User } from '../../../domain/user/User';
-import { UserDomainService } from '../../../domain/user/services/UserDomainService';
 
 export class UserApplicationService extends UserApplication {
-  constructor(private readonly userDomainService: UserDomainService) {
+  constructor(private readonly userRepository: UserRepository) {
     super();
   }
 
-  async createUser(input: UserScalar): Promise<void> {
-    const user = User.create({ id: Uuid.random().value, ...input });
-    await this.userDomainService.save(user);
+  async createUser(command: CreateUserCommand): Promise<void> {
+    const user = User.create({ id: Uuid.random().value, ...command });
+    await this.userRepository.save(user);
   }
 }

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChargeRepositoryAdapter } from '../adapters/charge.repository.adapter';
 import { DatabaseConfig } from '../config/database.config';
@@ -8,20 +8,9 @@ import { ClientEntity } from './client.entity';
 import { UserEntity } from './user.entity';
 import { UserRepositoryAdapter } from '../adapters/user.repository.adapter';
 import { ClientRepositoryAdapter } from '../adapters/client.repository.adapter';
-import { JwtTokenAdapter } from '../adapters/jwt-token.adapter';
-import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    JwtModule.registerAsync({
-      useFactory: (config: ConfigService) => ({
-        secret: config.getOrThrow<string>('jwt.secret'),
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        signOptions: { expiresIn: config.get('jwt.expiresIn', '24h') as any }
-      }),
-      inject: [ConfigService]
-    }),
-    ConfigModule,
     TypeOrmModule.forRootAsync({
       useFactory: (config: ConfigService) => {
         const database = config.get<DatabaseConfig>('database');
@@ -47,7 +36,7 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     TypeOrmModule.forFeature([ChargeEntity, UserEntity, ClientEntity])
   ],
-  providers: [ChargeRepositoryAdapter, ClientRepositoryAdapter, UserRepositoryAdapter, JwtTokenAdapter],
-  exports: [ChargeRepositoryAdapter, ClientRepositoryAdapter, UserRepositoryAdapter, JwtTokenAdapter]
+  providers: [ChargeRepositoryAdapter, ClientRepositoryAdapter, UserRepositoryAdapter],
+  exports: [ChargeRepositoryAdapter, ClientRepositoryAdapter, UserRepositoryAdapter]
 })
 export class DatabaseModule {}

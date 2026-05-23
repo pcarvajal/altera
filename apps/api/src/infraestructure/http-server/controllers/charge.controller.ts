@@ -18,13 +18,10 @@ export class ChargeController {
   async create(@Body() body: CreateChargeRequest): Promise<void> {
     await this.chargeApplication.createCharge({
       clientId: body.clientId,
-      generationDate: new Date(body.generationDate),
-      state: body.state,
-      amount: body.amount,
       reference: body.reference,
-      rejectDetails: body.rejectDetails,
-      createdAt: new Date(),
-      updatedAt: new Date()
+      generationDate: new Date(body.generationDate),
+      amount: body.amount,
+      rejectDetails: body.rejectDetails
     });
   }
 }

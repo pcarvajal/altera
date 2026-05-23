@@ -1,5 +1,5 @@
-import { ClientScalar } from '../../domain/client/ClientScalar';
+import { CreateClientCommand } from './commands/CreateClientCommand';
 
 export abstract class ClientApplication {
-  abstract createClient(input: ClientScalar): Promise<void>;
+  abstract createClient(command: CreateClientCommand): Promise<void>;
 }

@@ -1,10 +1,14 @@
 import { Module } from '@nestjs/common';
-import { ChargeController } from './controllers/charge.controller';
-import { UserController } from './controllers/user.controller';
-import { ClientController } from './controllers/client.controller';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './guards/jwt.strategy';
 import { AuthController } from './controllers/auth.controller';
+import { ChargeController } from './controllers/charge.controller';
+import { ClientController } from './controllers/client.controller';
+import { UserController } from './controllers/user.controller';
 
 @Module({
-  controllers: [AuthController, ChargeController, ClientController, UserController]
+  imports: [PassportModule],
+  controllers: [AuthController, ChargeController, ClientController, UserController],
+  providers: [JwtStrategy]
 })
 export class HttpServerModule {}

@@ -1,9 +1,9 @@
 import * as bcrypt from 'bcrypt';
-import { UnauthorizedException } from '@nestjs/common';
 import { AuthApplication, LoginInput, LoginOutput } from '../AuthApplication';
 import { UserRepository } from '../../../domain/user/ports/outputs/UserRepository';
 import { TokenPort } from '../../../domain/user/ports/outputs/TokenPort';
 import { UserEmail } from '../../../domain/user/value-objects/UserEmail';
+import { InvalidCredentialsError } from '../../../domain/user/errors/InvalidCredentialsError';
 
 export class AuthApplicationService extends AuthApplication {
   constructor(
@@ -15,11 +15,11 @@ export class AuthApplicationService extends AuthApplication {
 
   async login({ email, password }: LoginInput): Promise<LoginOutput> {
     const user = await this.userRepository.findByEmail(new UserEmail({ value: email }));
-    if (!user) throw new UnauthorizedException('Invalid credentials');
+    if (!user) throw new InvalidCredentialsError();
 
     const scalars = user.toScalars();
     const passwordMatch = await bcrypt.compare(password, scalars.password);
-    if (!passwordMatch) throw new UnauthorizedException('Invalid credentials');
+    if (!passwordMatch) throw new InvalidCredentialsError();
 
     const accessToken = this.tokenPort.sign({
       sub: scalars.id!,
