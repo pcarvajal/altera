@@ -12,6 +12,8 @@
     "start": "node dist/main",
     "format": "prettier --write .",
     "clean": "rm -rf dist",
+    "test": "jest --config test/jest-unit.json",
+    "test:watch": "jest --config test/jest-unit.json --watch",
     "db:seed": "tsx scripts/seed.ts",
     "db:clean": "tsx scripts/clean.ts"
   },
